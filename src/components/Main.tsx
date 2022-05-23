@@ -21,7 +21,6 @@ export default function Main(): JSX.Element {
     handleGetAll();
   }, [submitted]);
 
- 
   async function handleSubmit() {
     setSubmitted((prev) => !prev);
     setValues({ ...values, profit: profit });
@@ -29,28 +28,27 @@ export default function Main(): JSX.Element {
     await axios.post(herokudb + "data", {
       title: values.title,
       date: values.date,
-      led: values.led, 
+      led: values.led,
       plexi: values.plexi,
       cut: values.cut,
       transfeu: values.transfeu,
       paid: values.paid,
       profit: profit,
     });
-    setValues(emptyData)
-    
+    setValues(emptyData);
   }
 
-  async function handleEdit(id:number) {
-    const postToEdit = allData.find((data)=> data.id === id)
-    if (postToEdit){
-      console.log(postToEdit)
-      setValues(postToEdit)
+  async function handleEdit(id: number) {
+    const postToEdit = allData.find((data) => data.id === id);
+    if (postToEdit) {
+      console.log(postToEdit);
+      setValues(postToEdit);
     }
-  } 
+  }
 
-  console.log(values)
+  console.log(values);
 
-  function areCostsFilled():boolean {
+  function areCostsFilled(): boolean {
     if (
       values.cut !== 0 &&
       values.led !== 0 &&
@@ -59,8 +57,8 @@ export default function Main(): JSX.Element {
       values.paid !== 0
     ) {
       return true;
-    }else{
-      return false
+    } else {
+      return false;
     }
   }
 
@@ -96,36 +94,46 @@ export default function Main(): JSX.Element {
             placeholder="LED Price"
             value={showPlaceholder(values.led)}
             name="led"
-            onChange={(e) => setValues({ ...values, led: parseInt(e.target.value) })}
+            onChange={(e) =>
+              setValues({ ...values, led: parseInt(e.target.value) })
+            }
           ></input>
           <input
             className="form-field"
             placeholder="Plexi Price"
             value={showPlaceholder(values.plexi)}
             name="plexi"
-            onChange={(e) => setValues({ ...values, plexi: parseInt(e.target.value) })}
+            onChange={(e) =>
+              setValues({ ...values, plexi: parseInt(e.target.value) })
+            }
           ></input>
           <input
             className="form-field"
             placeholder="Cut Price"
             value={showPlaceholder(values.cut)}
             name="cut"
-            onChange={(e) => setValues({ ...values, cut: parseInt(e.target.value) })}
+            onChange={(e) =>
+              setValues({ ...values, cut: parseInt(e.target.value) })
+            }
           ></input>
           <input
             className="form-field"
             placeholder="Transfeu"
             value={showPlaceholder(values.transfeu)}
             name="transfeu"
-            onChange={(e) => setValues({ ...values, transfeu: parseInt(e.target.value) })}
+            onChange={(e) =>
+              setValues({ ...values, transfeu: parseInt(e.target.value) })
+            }
           ></input>
           <input
             className="form-field"
-            placeholder="Paid" 
+            placeholder="Paid"
             value={showPlaceholder(values.paid)}
-            name="paid" 
-            type={'number'}
-            onChange={(e) => setValues({ ...values, paid: parseInt(e.target.value)})}
+            name="paid"
+            type={"number"}
+            onChange={(e) =>
+              setValues({ ...values, paid: parseInt(e.target.value) })
+            }
           ></input>
           <input
             className="form-field"
@@ -144,7 +152,7 @@ export default function Main(): JSX.Element {
                   <th>Date</th>
                   <th>Led</th>
                   <th>Plexi</th>
-                  <th>Cut</th> 
+                  <th>Cut</th>
                   <th>Transfeu</th>
                   <th>Paid</th>
                   <th>Profit</th>
@@ -160,7 +168,14 @@ export default function Main(): JSX.Element {
                   <td>{data.profit}</td>
                 </tr>
               </table>
-              <button onClick={()=> handleEdit(data.id!)}>Edit</button>
+              <button
+                onClick={() =>
+                  /*eslint-disable-next-line*/
+                  handleEdit(data.id!)
+                }
+              >
+                Edit
+              </button>
             </div>
           ))}
         </div>

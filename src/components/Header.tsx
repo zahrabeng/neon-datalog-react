@@ -1,4 +1,4 @@
-export default function Header():JSX.Element {
+export default function Header(): JSX.Element {
   return (
     <>
       <div className="website-title">
