@@ -4,21 +4,14 @@ import profitCalc from "../utils/profitCalc";
 import axios from "axios";
 import resultData from "./Interfaces";
 import showPlaceholder from "../utils/showPlaceholder";
+import emptyData from "../utils/emptyData";
 
 export default function Main(): JSX.Element {
-  const [values, setValues] = useState({
-    title: "",
-    date: "",
-    led: 0,
-    plexi: 0,
-    cut: 0,
-    transfeu: 0,
-    paid: 0,
-    profit: 0,
-  });
+  const [values, setValues] = useState(emptyData);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [allData, setAllData] = useState<resultData[]>([]);
 
+  console.log(values)
   const herokudb = "http://localhost:4000/";
 
   useEffect(() => {
@@ -30,7 +23,7 @@ export default function Main(): JSX.Element {
   }, [submitted]);
 
   console.log(allData, "this is all data");
-
+ 
   async function handleSubmit() {
     setSubmitted((prev) => !prev);
     setValues({ ...values, profit: profit });
