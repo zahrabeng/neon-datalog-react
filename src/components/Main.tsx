@@ -3,16 +3,17 @@ import { useState, useEffect } from "react";
 import profitCalc from "../utils/profitCalc";
 import axios from "axios";
 import resultData from "./Interfaces";
+import showPlaceholder from "../utils/showPlaceholder";
 
 export default function Main(): JSX.Element {
   const [values, setValues] = useState({
     title: "",
     date: "",
-    led: "",
-    plexi: "",
-    cut: "",
-    transfeu: "",
-    paid: "",
+    led: 0,
+    plexi: 0,
+    cut: 0,
+    transfeu: 0,
+    paid: 0,
     profit: 0,
   });
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -37,22 +38,22 @@ export default function Main(): JSX.Element {
     await axios.post(herokudb + "data", {
       title: values.title,
       date: values.date,
-      led: parseInt(values.led),
-      plexi: parseInt(values.plexi),
-      cut: parseInt(values.cut),
-      transfeu: parseInt(values.transfeu),
-      paid: parseInt(values.paid),
+      led: values.led,
+      plexi: values.plexi,
+      cut: values.cut,
+      transfeu: values.transfeu,
+      paid: values.paid,
       profit: profit,
     });
   }
 
   function areCostsFilled() {
     if (
-      values.cut !== "" &&
-      values.led !== "" &&
-      values.transfeu !== "" &&
-      values.plexi !== "" &&
-      values.paid !== ""
+      values.cut !== 0 &&
+      values.led !== 0 &&
+      values.transfeu !== 0 &&
+      values.plexi !== 0 &&
+      values.paid !== 0
     ) {
       return true;
     }
@@ -88,37 +89,38 @@ export default function Main(): JSX.Element {
           <input
             className="form-field"
             placeholder="LED Price"
-            value={values.led}
+            value={showPlaceholder(values.led)}
             name="led"
-            onChange={(e) => setValues({ ...values, led: e.target.value })}
+            onChange={(e) => setValues({ ...values, led: parseInt(e.target.value) })}
           ></input>
           <input
             className="form-field"
             placeholder="Plexi Price"
-            value={values.plexi}
+            value={showPlaceholder(values.plexi)}
             name="plexi"
-            onChange={(e) => setValues({ ...values, plexi: e.target.value })}
+            onChange={(e) => setValues({ ...values, plexi: parseInt(e.target.value) })}
           ></input>
           <input
             className="form-field"
             placeholder="Cut Price"
-            value={values.cut}
+            value={showPlaceholder(values.cut)}
             name="cut"
-            onChange={(e) => setValues({ ...values, cut: e.target.value })}
+            onChange={(e) => setValues({ ...values, cut: parseInt(e.target.value) })}
           ></input>
           <input
             className="form-field"
             placeholder="Transfeu"
-            value={values.transfeu}
+            value={showPlaceholder(values.transfeu)}
             name="transfeu"
-            onChange={(e) => setValues({ ...values, transfeu: e.target.value })}
+            onChange={(e) => setValues({ ...values, transfeu: parseInt(e.target.value) })}
           ></input>
           <input
             className="form-field"
-            placeholder="Paid"
-            value={values.paid}
+            placeholder="Paid" 
+            value={showPlaceholder(values.paid)}
             name="paid"
-            onChange={(e) => setValues({ ...values, paid: e.target.value })}
+            type="text" 
+            onChange={(e) => setValues({ ...values, paid: parseInt(e.target.value)})}
           ></input>
           <input
             className="form-field"
@@ -137,7 +139,7 @@ export default function Main(): JSX.Element {
                   <th>Date</th>
                   <th>Led</th>
                   <th>Plexi</th>
-                  <th>Cut</th>
+                  <th>Cut</th> 
                   <th>Transfeu</th>
                   <th>Paid</th>
                   <th>Profit</th>
