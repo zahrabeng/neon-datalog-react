@@ -29,7 +29,7 @@ export default function Main(): JSX.Element {
     await axios.post(herokudb + "data", {
       title: values.title,
       date: values.date,
-      led: values.led,
+      led: values.led, 
       plexi: values.plexi,
       cut: values.cut,
       transfeu: values.transfeu,
@@ -39,6 +39,16 @@ export default function Main(): JSX.Element {
     setValues(emptyData)
     
   }
+
+  async function handleEdit(id:number) {
+    const postToEdit = allData.find((data)=> data.id === id)
+    if (postToEdit){
+      console.log(postToEdit)
+      setValues(postToEdit)
+    }
+  } 
+
+  console.log(values)
 
   function areCostsFilled():boolean {
     if (
@@ -113,8 +123,8 @@ export default function Main(): JSX.Element {
             className="form-field"
             placeholder="Paid" 
             value={showPlaceholder(values.paid)}
-            name="paid"
-            type="text" 
+            name="paid" 
+            type={'number'}
             onChange={(e) => setValues({ ...values, paid: parseInt(e.target.value)})}
           ></input>
           <input
@@ -150,7 +160,7 @@ export default function Main(): JSX.Element {
                   <td>{data.profit}</td>
                 </tr>
               </table>
-              <button>Edit</button>
+              <button onClick={()=> handleEdit(data.id!)}>Edit</button>
             </div>
           ))}
         </div>
