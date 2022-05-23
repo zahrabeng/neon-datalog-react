@@ -11,7 +11,6 @@ export default function Main(): JSX.Element {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [allData, setAllData] = useState<resultData[]>([]);
 
-  console.log(values)
   const herokudb = "http://localhost:4000/";
 
   useEffect(() => {
@@ -22,7 +21,6 @@ export default function Main(): JSX.Element {
     handleGetAll();
   }, [submitted]);
 
-  console.log(allData, "this is all data");
  
   async function handleSubmit() {
     setSubmitted((prev) => !prev);
@@ -38,9 +36,11 @@ export default function Main(): JSX.Element {
       paid: values.paid,
       profit: profit,
     });
+    setValues(emptyData)
+    
   }
 
-  function areCostsFilled() {
+  function areCostsFilled():boolean {
     if (
       values.cut !== 0 &&
       values.led !== 0 &&
@@ -49,6 +49,8 @@ export default function Main(): JSX.Element {
       values.paid !== 0
     ) {
       return true;
+    }else{
+      return false
     }
   }
 
@@ -119,7 +121,7 @@ export default function Main(): JSX.Element {
             className="form-field"
             placeholder="Profit"
             name="profit"
-            value={areCostsFilled() && profit}
+            value={areCostsFilled() ? profit : ""}
           ></input>
         </form>
         <button onClick={() => handleSubmit()}>Submit</button>
