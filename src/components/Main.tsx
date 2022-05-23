@@ -1,6 +1,8 @@
 import Header from "./Header";
 import { useState, useEffect } from "react";
 import profitCalc from "../utils/profitCalc";
+import axios from "axios";
+import resultData from "./Interfaces";
 
 export default function Main(): JSX.Element {
   const [values, setValues] = useState({
@@ -11,15 +13,58 @@ export default function Main(): JSX.Element {
     cut: "",
     transfeu: "",
     paid: "",
-    profit: "",
+    profit: 0,
   });
-  const[submitted, setSubmitted] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [allData, setAllData] = useState<resultData[]>([]);
 
-function areCostsFilled(){
-  if (values.cut !== "" && values.led !== "" && values.transfeu !== "" && values.plexi !== "" && values.paid !== ""){
-  return true
-}
-}
+  const herokudb = "http://localhost:4000/";
+
+  useEffect(() => {
+    async function handleGetAll() {
+      const result = await axios.get(herokudb);
+      setAllData(result.data);
+    }
+    handleGetAll();
+  }, [submitted]);
+
+  console.log(allData, "this is all data");
+
+  async function handleSubmit() {
+    setSubmitted((prev) => !prev);
+    setValues({ ...values, profit: profit });
+    console.log(submitted);
+    await axios.post(herokudb + "data", {
+      title: values.title,
+      date: values.date,
+      led: parseInt(values.led),
+      plexi: parseInt(values.plexi),
+      cut: parseInt(values.cut),
+      transfeu: parseInt(values.transfeu),
+      paid: parseInt(values.paid),
+      profit: profit,
+    });
+  }
+
+  function areCostsFilled() {
+    if (
+      values.cut !== "" &&
+      values.led !== "" &&
+      values.transfeu !== "" &&
+      values.plexi !== "" &&
+      values.paid !== ""
+    ) {
+      return true;
+    }
+  }
+
+  const profit = profitCalc(
+    values.led,
+    values.plexi,
+    values.cut,
+    values.transfeu,
+    values.paid
+  );
 
   return (
     <>
@@ -78,17 +123,19 @@ function areCostsFilled(){
           <input
             className="form-field"
             placeholder="Profit"
-            value={areCostsFilled() && profitCalc(
-              values.led,
-              values.plexi,
-              values.cut,
-              values.transfeu,
-              values.paid
-            )}
             name="profit"
+            value={areCostsFilled() && profit}
           ></input>
         </form>
-        <button onClick={()=> handleSubmit}>Submit</button>
+        <button onClick={() => handleSubmit()}>Submit</button>
+        <div>
+          {allData.map((data) => (
+            <div key={data.id}>
+              {data.title}
+              {data.date}
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );
