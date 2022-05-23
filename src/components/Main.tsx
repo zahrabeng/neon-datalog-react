@@ -131,8 +131,29 @@ export default function Main(): JSX.Element {
         <div>
           {allData.map((data) => (
             <div key={data.id}>
-              {data.title}
-              {data.date}
+              <table>
+                <tr>
+                  <th>Title</th>
+                  <th>Date</th>
+                  <th>Led</th>
+                  <th>Plexi</th>
+                  <th>Cut</th>
+                  <th>Transfeu</th>
+                  <th>Paid</th>
+                  <th>Profit</th>
+                </tr>
+                <tr>
+                  <td>{data.title}</td>
+                  <td>{data.date}</td>
+                  <td>{data.led}</td>
+                  <td>{data.plexi}</td>
+                  <td>{data.cut}</td>
+                  <td>{data.transfeu}</td>
+                  <td>{data.paid}</td>
+                  <td>{data.profit}</td>
+                </tr>
+              </table>
+              <button>Edit</button>
             </div>
           ))}
         </div>
