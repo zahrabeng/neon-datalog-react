@@ -10,8 +10,10 @@ export default function Main(): JSX.Element {
   const [values, setValues] = useState(emptyData);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [allData, setAllData] = useState<resultData[]>([]);
+  const [edited, setEdited] = useState<boolean>(false);
+  const [id, setId] = useState<number>();
 
-  const herokudb = "http://localhost:4000/";
+  const herokudb = "https://neon-flex-db.herokuapp.com/";
 
   useEffect(() => {
     async function handleGetAll() {
@@ -19,12 +21,10 @@ export default function Main(): JSX.Element {
       setAllData(result.data);
     }
     handleGetAll();
-  }, [submitted]);
+  }, [submitted, edited]);
 
   async function handleSubmit() {
     setSubmitted((prev) => !prev);
-    setValues({ ...values, profit: profit });
-    console.log(submitted);
     await axios.post(herokudb + "data", {
       title: values.title,
       date: values.date,
@@ -39,14 +39,29 @@ export default function Main(): JSX.Element {
   }
 
   async function handleEdit(id: number) {
+    if (edited === false) {
+      setEdited((prev) => !prev);
+    }
     const postToEdit = allData.find((data) => data.id === id);
     if (postToEdit) {
-      console.log(postToEdit);
       setValues(postToEdit);
     }
   }
 
-  console.log(values);
+  async function handleSubmitEdit() {
+    setEdited((prev) => !prev);
+    setValues(emptyData);
+    axios.put(herokudb + "data/" + id, {
+      title: values.title,
+      date: values.date,
+      led: values.led,
+      plexi: values.plexi,
+      cut: values.cut,
+      transfeu: values.transfeu,
+      paid: values.paid,
+      profit: profit,
+    });
+  }
 
   function areCostsFilled(): boolean {
     if (
@@ -70,80 +85,92 @@ export default function Main(): JSX.Element {
     values.paid
   );
 
+  console.log(profit);
+
+  console.log(values);
+
   return (
     <>
       <Header />
-      <div className="inputs-container">
-        <form className="form-container">
-          <input
-            className="form-field"
-            placeholder="Title"
-            value={values.title}
-            name="title"
-            onChange={(e) => setValues({ ...values, title: e.target.value })}
-          ></input>
-          <input
-            className="form-field"
-            placeholder="DD/MM/YYYY"
-            value={values.date}
-            name="date"
-            onChange={(e) => setValues({ ...values, date: e.target.value })}
-          ></input>
-          <input
-            className="form-field"
-            placeholder="LED Price"
-            value={showPlaceholder(values.led)}
-            name="led"
-            onChange={(e) =>
-              setValues({ ...values, led: parseInt(e.target.value) })
-            }
-          ></input>
-          <input
-            className="form-field"
-            placeholder="Plexi Price"
-            value={showPlaceholder(values.plexi)}
-            name="plexi"
-            onChange={(e) =>
-              setValues({ ...values, plexi: parseInt(e.target.value) })
-            }
-          ></input>
-          <input
-            className="form-field"
-            placeholder="Cut Price"
-            value={showPlaceholder(values.cut)}
-            name="cut"
-            onChange={(e) =>
-              setValues({ ...values, cut: parseInt(e.target.value) })
-            }
-          ></input>
-          <input
-            className="form-field"
-            placeholder="Transfeu"
-            value={showPlaceholder(values.transfeu)}
-            name="transfeu"
-            onChange={(e) =>
-              setValues({ ...values, transfeu: parseInt(e.target.value) })
-            }
-          ></input>
-          <input
-            className="form-field"
-            placeholder="Paid"
-            value={showPlaceholder(values.paid)}
-            name="paid"
-            type={"number"}
-            onChange={(e) =>
-              setValues({ ...values, paid: parseInt(e.target.value) })
-            }
-          ></input>
-          <input
-            className="form-field"
-            placeholder="Profit"
-            name="profit"
-            value={areCostsFilled() ? profit : ""}
-          ></input>
-        </form>
+      <form className="form-container">
+        <input
+          className="form-field"
+          placeholder="Title"
+          value={values.title}
+          name="title"
+          onChange={(e) => setValues({ ...values, title: e.target.value })}
+        ></input>
+        <input
+          className="form-field"
+          placeholder="DD/MM/YYYY"
+          value={values.date}
+          name="date"
+          onChange={(e) => setValues({ ...values, date: e.target.value })}
+        ></input>
+        <input
+          className="form-field"
+          placeholder="LED Price"
+          value={showPlaceholder(values.led)}
+          name="led"
+          type={"number"}
+          onChange={(e) =>
+            setValues({ ...values, led: parseInt(e.target.value) })
+          }
+        ></input>
+        <input
+          className="form-field"
+          placeholder="Plexi Price"
+          value={showPlaceholder(values.plexi)}
+          name="plexi"
+          type={"number"}
+          onChange={(e) =>
+            setValues({ ...values, plexi: parseInt(e.target.value) })
+          }
+        ></input>
+        <input
+          className="form-field"
+          placeholder="Cut Price"
+          value={showPlaceholder(values.cut)}
+          name="cut"
+          type={"number"}
+          onChange={(e) =>
+            setValues({ ...values, cut: parseInt(e.target.value) })
+          }
+        ></input>
+        <input
+          className="form-field"
+          placeholder="Transfeu"
+          value={showPlaceholder(values.transfeu)}
+          name="transfeu"
+          type={"number"}
+          onChange={(e) =>
+            setValues({ ...values, transfeu: parseInt(e.target.value) })
+          }
+        ></input>
+        <input
+          className="form-field"
+          placeholder="Paid"
+          value={showPlaceholder(values.paid)}
+          name="paid"
+          type={"number"}
+          onChange={(e) =>
+            setValues({ ...values, paid: parseInt(e.target.value) })
+          }
+        ></input>
+        <input
+          className="form-field"
+          placeholder="Profit"
+          name="profit"
+          value={areCostsFilled() ? profit : ""}
+        ></input>
+      </form>
+      {edited ? (
+        <button onClick={() => handleSubmitEdit()}>Submit Edit</button>
+      ) : (
         <button onClick={() => handleSubmit()}>Submit</button>
-        <div>
+      )}
+      <div className="all-data-container">
+        <div className="testing">
           {allData.map((data) => (
             <div key={data.id}>
               <table>
@@ -165,14 +192,17 @@ export default function Main(): JSX.Element {
                   <td>{data.cut}</td>
                   <td>{data.transfeu}</td>
                   <td>{data.paid}</td>
-                  <td>{data.profit}</td>
+                  <td className="td-profit">{data.profit}</td>
                 </tr>
               </table>
               <button
-                onClick={() =>
+                className="edit-btn"
+                onClick={() => {
                   /*eslint-disable-next-line*/
-                  handleEdit(data.id!)
-                }
+                  handleEdit(data.id!);
+                  /*eslint-disable-next-line*/
+                  setId(data.id!);
+                }}
               >
                 Edit
               </button>

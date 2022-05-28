@@ -1,0 +1,60 @@
+body{
+    background-color: rgb(32, 87, 119);
+    font-family: 'Courier New', Courier, monospace;
+    background-image: url("https://www.transparenttextures.com/patterns/escheresque.png");
+    /* background-image: url("https://www.transparenttextures.com/patterns/clean-gray-paper.png"); */
+}
+
+table, td {
+    border: 1px #063341 solid;
+    color: #042b36;
+    width: 70%;
+    background-color: #f8f8f8;
+    font-size: 20px;
+    margin: auto;
+    border-radius: 2px;
+    padding: 7px;
+    text-align: center;
+}
+
+th{
+    width: 20%;
+    padding: 7px;
+}
+
+.td-profit{
+    background-color: #11627a;
+    color: white;
+}
+
+.all-data-container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    text-align: center;
+    
+}
+
+.edit-btn{
+    margin-top: 5px;
+    margin-bottom: 25px;
+    padding: 6px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 10%;
+    box-shadow: #002a42 2px 2px 0 0;
+    cursor: pointer;
+  
+}
+
+
+
+.website-title{
+    text-align: center;
+    color: #f8f8f8;
+    text-shadow: 8px 4px #062d38;
+    font-size: 30px;
+    
+}
+
