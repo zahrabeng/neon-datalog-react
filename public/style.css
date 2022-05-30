@@ -58,3 +58,32 @@ th{
     
 }
 
+.form-container{
+   display: flex;
+   width: 80%;
+   flex-wrap: wrap;
+   flex-direction: row;
+   margin: auto;
+}
+
+.form-field{
+    margin: 5px;
+    height: 30px;
+    border-radius: 4%;
+    border-style: none;
+    font-size:20px;
+    width: 200px;
+}
+
+.submit-button{
+    padding: 6px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 10%;
+    box-shadow: #002a42 2px 2px 0 0;
+    cursor: pointer;
+    background-color: white;
+    margin: 10px auto ;
+    display:block;
+}

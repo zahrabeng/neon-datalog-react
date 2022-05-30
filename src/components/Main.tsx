@@ -165,9 +165,13 @@ export default function Main(): JSX.Element {
         ></input>
       </form>
       {edited ? (
-        <button onClick={() => handleSubmitEdit()}>Submit Edit</button>
+        <button onClick={() => handleSubmitEdit()} className="submit-button">
+          Submit Edit
+        </button>
       ) : (
-        <button onClick={() => handleSubmit()}>Submit</button>
+        <button onClick={() => handleSubmit()} className="submit-button">
+          Submit
+        </button>
       )}
       <div className="all-data-container">
         <div className="testing">
