@@ -12,9 +12,9 @@ export default function Main(): JSX.Element {
   const [allData, setAllData] = useState<resultData[]>([]);
   const [edited, setEdited] = useState<boolean>(false);
   const [id, setId] = useState<number>();
+  const [totalProfits, setTotalProfits] = useState<number>(0);
 
   const herokudb = "https://neon-flex-db.herokuapp.com/";
-
   useEffect(() => {
     async function handleGetAll() {
       const result = await axios.get(herokudb);
@@ -23,6 +23,12 @@ export default function Main(): JSX.Element {
     handleGetAll();
   }, [submitted, edited]);
 
+  while (totalProfits === 0) {
+    allData.forEach((data) => setTotalProfits((prev) => prev + data.profit));
+    break;
+  }
+
+  console.log(totalProfits);
   async function handleSubmit() {
     setSubmitted((prev) => !prev);
     await axios.post(herokudb + "data", {
@@ -47,6 +53,8 @@ export default function Main(): JSX.Element {
       setValues(postToEdit);
     }
   }
+
+  console.log(totalProfits);
 
   async function handleSubmitEdit() {
     setEdited((prev) => !prev);
@@ -84,10 +92,6 @@ export default function Main(): JSX.Element {
     values.transfeu,
     values.paid
   );
-
-  console.log(profit);
-
-  console.log(values);
 
   return (
     <>
@@ -175,6 +179,7 @@ export default function Main(): JSX.Element {
       )}
       <div className="all-data-container">
         <div className="testing">
+          <div className="total-profit">Total Profit: {totalProfits}</div>
           {allData.map((data) => (
             <div key={data.id}>
               <table>
