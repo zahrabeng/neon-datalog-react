@@ -18,9 +18,9 @@ export default function Main(): JSX.Element {
   useEffect(() => {
     async function handleGetAll() {
       const result = await axios.get(herokudb);
+      setTotalProfits(0);
       setAllData(result.data);
     }
-    setTotalProfits(0);
     handleGetAll();
   }, [submitted, edited]);
 
