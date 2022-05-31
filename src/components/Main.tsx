@@ -20,6 +20,7 @@ export default function Main(): JSX.Element {
       const result = await axios.get(herokudb);
       setAllData(result.data);
     }
+    setTotalProfits(0);
     handleGetAll();
   }, [submitted, edited]);
 
