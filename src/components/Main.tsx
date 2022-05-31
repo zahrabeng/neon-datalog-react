@@ -18,7 +18,6 @@ export default function Main(): JSX.Element {
   useEffect(() => {
     async function handleGetAll() {
       const result = await axios.get(herokudb);
-      setTotalProfits(0);
       setAllData(result.data);
     }
     handleGetAll();
@@ -31,6 +30,7 @@ export default function Main(): JSX.Element {
 
   console.log(totalProfits);
   async function handleSubmit() {
+    setTotalProfits(0);
     setSubmitted((prev) => !prev);
     await axios.post(herokudb + "data", {
       title: values.title,
@@ -58,6 +58,7 @@ export default function Main(): JSX.Element {
   console.log(totalProfits);
 
   async function handleSubmitEdit() {
+    setTotalProfits(0);
     setEdited((prev) => !prev);
     setValues(emptyData);
     axios.put(herokudb + "data/" + id, {
